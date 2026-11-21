@@ -27,9 +27,15 @@ def main() -> None:
         raise SystemExit(f"joke is {chars} chars, must be 1-{MAX_CHARS}")
     if not joke.strip():
         raise SystemExit("joke is only whitespace")
+    if "\n" in joke:
+        raise SystemExit("joke must be a single line")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as handle:
         handle.write(joke)
+    with open("/output/entry.txt", encoding="utf-8") as handle:
+        written = handle.read()
+    if written != joke:
+        raise SystemExit("read-back mismatch: entry.txt differs from the joke")
     print(f"Wrote {chars} chars to /output/entry.txt")
 
 
